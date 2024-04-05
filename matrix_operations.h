@@ -12,6 +12,6 @@ void inicializarMatrices(int n, double* mA, double* mB, double* mC);
 
 void imprimirMatriz(int n, double* m);
 
-void* multiplicacionMatriz(struct datosMM datos);
+void* multiplicacionMatriz(void* arg);
 
 #endif
