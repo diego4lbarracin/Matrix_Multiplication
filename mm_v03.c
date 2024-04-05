@@ -26,8 +26,7 @@
 // Librerias usadas en el programa.
 #include <stdio.h>
 #include <pthread.h>
-#include <stdlib.h>
-#include <sys/time.h>
+#include "matrix_operations.h"
 
 // Reserva de memoria.
 // Definicion de la palabra RESERVA para denotar el tamano del espacio de memoria.
@@ -35,55 +34,7 @@
 // Creación de un vector cuyo tamano sera igual a RESERVA
 static double MEM_CHUNK[RESERVA];
 
-struct datosMM{
-  int N; 
-  double* mA;
-  double* mB;
-  double* mC;
-};
 
-//Firma de funciones.
-void inicializarMatrices(int n, double* mA, double* mB, double* mC){
-  //Inicializacion de matrices.
-  for (int i = 0; i < n*n; i++) {
-    mA[i] = i*1.1;
-    mB[i] = i*2.2;
-    mC[i] = i;
-  }
-}
-void imprimirMatriz(int n, double* m){
-  //Impresion de matriz.
-  if(n<9){
-      for (int i = 0; i < n*n; i++) {
-        if(i%n == 0){printf("\n");}
-        printf("%f ", m[i]);
-      }
-      printf("\n***************************************\n");
-  }else{
-      printf("\n***************************************\n");
-  }
-
-}
-
-void* multiplicacionMatriz(struct datosMM datos){
-  /*Algoritmo simple de multiplicacion de matrices*/
-  double *pA, *pB, sumaTemp;
-  for (int i = 0; i < datos.N; i++)
-  {
-      for (int j = 0; j < datos.N; j++)
-      {
-        pA = datos.mA + (i*datos.N);
-        pB = datos.mB +j;
-        for (int k = 0; k < datos.N; k++, pA++, pB+=datos.N)
-        {
-          sumaTemp += *pA * *pB;
-        }
-        datos.mC[(j+i)*datos.N] = sumaTemp;
-      }
-  }
-  imprimirMatriz(datos.N, datos.mC);
-  return 0;
-}
 
 
 int main(int argc, char *argv[]){
@@ -128,11 +79,11 @@ int main(int argc, char *argv[]){
 
   printf("Matriz Producto mA * mB\n");
   
-  /*Creación de tantos hilos de ejecución como se hayan recibido como argumento*/
-  for(int h=0; h<H; h++){
-    /*Funcion par la creacion de hilos de ejecucion.*/
-    pthread_create(&hilos[h], NULL, multiMatrices(dataM), &h);
-  }
+  // /*Creación de tantos hilos de ejecución como se hayan recibido como argumento*/
+  // for(int h=0; h<H; h++){
+  //   /*Funcion par la creacion de hilos de ejecucion.*/
+  //   pthread_create(&hilos[h], NULL, multiMatrices(dataM), &h);
+  // }
   
   printf("\nFin del programa\n");
   return 0;
