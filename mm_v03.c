@@ -21,6 +21,15 @@
     -Multiplicacion de matrices.
   ----mm_v03.c
     -Delaracion de vectores de hilos.
+  ---Implemetacion de Paralelismo (Clase 4/11/2024)
+      -Resolucion de la multiplicacion de hilos.
+      -Se crea el vector de hilos.
+      -Se tiene pendiente la exclusion de los hilos.
+      -Se convierten las matrices a varibles de alcance global.
+      -Encapsular los datos para enviarlos como argumento a la funcion que ejecutara
+      el hilo.
+      -Posteriormente, se desencapsulan los datos una vez han sido recibidos por el metodo
+      multiplicacionMatriz.
 */
 
 // Librerias usadas en el programa.
@@ -33,6 +42,8 @@
 #define RESERVA (1024*128*64*8)
 // Creación de un vector cuyo tamano sera igual a RESERVA
 static double MEM_CHUNK[RESERVA];
+
+
 
 
 
@@ -50,12 +61,11 @@ int main(int argc, char *argv[]){
   int N = atoi(argv[1]);
   int H = atoi(argv[2]);
 
-  pthread_t hilos[H];
 
-  
   // Creacion de variables apuntadoras para hacer referencias a diferentes espacios de memoria
-  // dentro de MEM_CHUNK[RESERVA]
+  // dentro de MEM_CHUNK[RESERVA] 
   double *mA, *mB, *mC;
+
   //Definicion de los espacios de memoria a los que van a hacer referencia
   //los punteros.
   mA = MEM_CHUNK;
@@ -69,23 +79,37 @@ int main(int argc, char *argv[]){
   imprimirMatriz(N, mA);
   printf("Matriz B\n");
   imprimirMatriz(N, mB);
-  // printf("Matriz C\n");
-  // imprimirMatriz(N, mC);
-  struct datosMM dataM;
-  dataM.N = N;
-  dataM.mA= mA;
-  dataM.mB = mB;
-  dataM.mC = mC;
+                                              // printf("Matriz C\n");
+                                              // imprimirMatriz(N, mC);
+  /*Instancia de un puntero de tipo datosMM.
+  Se asigna su tamano en memoria por medio del metodo malloc*/
+  struct datosMM* valoresMM  = (struct datosMM *) malloc(sizeof(struct datosMM));
+    // struct datosMM* valoresMM;
+  valoresMM->N = N;
+  valoresMM->H = H;
+  valoresMM->mA = mA;
+  valoresMM->mB = mB;
+  valoresMM->mC = mC;
+  // /*Creación de tantos hilos de ejecución como se hayan recibido como argumento*/
+  pthread_t hilos[H];
 
   printf("Matriz Producto mA * mB\n");
+
+  for(int h=0; h<H; h++){
+    /*Funcion par la creacion de hilos de ejecucion.*/
+    pthread_create(&hilos[h], NULL, multiplicacionMatriz, valoresMM);
+  }
+  /*Puesta en espera para terminacion de cada  uno de los hilos*/
+  for (int h = 0; h < H; h++)
+  {
+      pthread_join(hilos[h], NULL);
+  }
   
-  // /*Creación de tantos hilos de ejecución como se hayan recibido como argumento*/
-  // for(int h=0; h<H; h++){
-  //   /*Funcion par la creacion de hilos de ejecucion.*/
-  //   pthread_create(&hilos[h], NULL, multiMatrices(dataM), &h);
-  // }
   
   printf("\nFin del programa\n");
-  return 0;
+  // return 0;
+  pthread_exit( NULL );
+  free(valoresMM);
+
 }
 

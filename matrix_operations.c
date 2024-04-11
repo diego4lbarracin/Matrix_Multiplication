@@ -32,22 +32,22 @@ void imprimirMatriz(int n, double* m){
 }
 
 void* multiplicacionMatriz(void* arg){
-    struct datosMM *datos = arg;
+  struct datosMM *valorInterno = arg;
   /*Algoritmo simple de multiplicacion de matrices*/
   double *pA, *pB, sumaTemp;
-  for (int i = 0; i < datos->N; i++)
+  for (int i = 0; i < valorInterno->N; i++)
   {
-      for (int j = 0; j < datos->N; j++)
+      for (int j = 0; j < valorInterno->N; j++)
       {
-        pA = datos->mA + (i*datos->N);
-        pB = datos->mB +j;
-        for (int k = 0; k < datos->N; k++, pA++, pB+=datos->N)
+        pA = valorInterno->mA + (i*valorInterno->N);
+        pB = valorInterno->mB +j;
+        for (int k = 0; k < valorInterno->N; k++, pA++, pB+=valorInterno->N)
         {
           sumaTemp += *pA * *pB;
         }
-        datos->mC[(j+i)*datos->N] = sumaTemp;
+        valorInterno->mC[(j+i)*valorInterno->N] = sumaTemp;
       }
   }
-  imprimirMatriz(datos->N, datos->mC);
+  imprimirMatriz(valorInterno->N, valorInterno->mC);
   return NULL;
 }

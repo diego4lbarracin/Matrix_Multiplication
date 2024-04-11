@@ -1,8 +1,9 @@
 #ifndef __MATRIX_OPERATIONS_H__
 #define __MATRIX_OPERATIONS_H__
-
+#include <stdlib.h>
 struct datosMM{
-  int N; 
+  int N; /*Dimension de la matriz*/
+  int H; /*Cantidad de hilos de ejecucion*/
   double* mA;
   double* mB;
   double* mC;
