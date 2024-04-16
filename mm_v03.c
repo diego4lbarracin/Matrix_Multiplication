@@ -1,8 +1,8 @@
 /*
-  Fecha: 04/04/04
+  Fecha: 04/15/04
   Autor: Diego Albarracin
   Materia: Sistemas Operativos
-  Tema: Concurrencia
+  Tema: Concurrencia, Paralelismo y Programacion de Hilos de Ejecucion.
   Objetivo: Metodologia para la implementacion de la 
   multiplicacion de matrices haciendo uso de paralelismo 
   por medio de la biblioteca Pthreads. Se hace uso del
@@ -43,7 +43,6 @@
 // Creación de un vector cuyo tamano sera igual a RESERVA
 static double MEM_CHUNK[RESERVA];
 
-
 int main(int argc, char *argv[]){
   //Verficacion de que la cantidad de argumentos ingresada sea correcta.
   if( argc < 3){
@@ -57,8 +56,7 @@ int main(int argc, char *argv[]){
   int N = atoi(argv[1]);
   int H = atoi(argv[2]);
 
-
-  // Creacion de variables apuntadoras para hacer referencias a diferentes espacios de memoria
+  // Creacion de variables apuntadoras para hacer referencia a diferentes espacios de memoria
   // dentro de MEM_CHUNK[RESERVA] 
   double *mA, *mB, *mC;
 
@@ -67,9 +65,9 @@ int main(int argc, char *argv[]){
   mA = MEM_CHUNK;
   mB= mA + ( N*N );
   mC= mB + ( N*N );
+
   //Inicializacion de matrices.
   inicializarMatrices(N, mA, mB, mC);
-
   //Impresion de cada una de las matrices.
   printf("Matriz A\n");
   imprimirMatriz(N, mA);
@@ -78,8 +76,6 @@ int main(int argc, char *argv[]){
 
  /*Creación de tantos hilos de ejecución como se hayan recibido como argumento*/
   pthread_t hilos[H];
-
-  printf("Matriz Producto mA * mB\n");
 
   for(int h=0; h<H; h++){
       /*Instancia de un puntero de tipo datosMM.
@@ -95,14 +91,14 @@ int main(int argc, char *argv[]){
       /*Funcion par la creacion de hilos de ejecucion.*/
       pthread_create(&hilos[h], NULL, multiplicacionMatriz, valoresMM);
   }
-
   /*Puesta en espera para terminacion de cada  uno de los hilos*/
   for (int h = 0; h < H; h++)
   {
       pthread_join(hilos[h], NULL);
   }
-
-
+  /*Impresion en consola de la matriz producto.*/
+  printf("Matriz Producto mA * mB\n");
+  imprimirMatriz(N, mC);
   printf("\nFin del programa\n");
   // return 0;
   pthread_exit( NULL );
