@@ -44,18 +44,14 @@
 static double MEM_CHUNK[RESERVA];
 
 
-
-
-
-
 int main(int argc, char *argv[]){
   //Verficacion de que la cantidad de argumentos ingresada sea correcta.
   if( argc < 3){
-    printf("No se ingresaron suficientes elementos\n");
-    return 1;
-  }else if(atoi(argv[1]) <= 0 && atoi(argv[2]) <= 0){
-    printf("Los elementos son menores o iguales a 0\n");
-    return 1;
+      fprintf(stderr, "No se ingresaron suficientes argumentos.\n");
+      return 1;
+  } else if(atoi(argv[1]) <= 0 && atoi(argv[2]) <= 0){
+      fprintf(stderr, "Los argumentos ingresados son menores o iguales a 0\n");
+      return 1;
   }
   //Captura de los valores ingresados como argumento.
   int N = atoi(argv[1]);
@@ -79,13 +75,8 @@ int main(int argc, char *argv[]){
   imprimirMatriz(N, mA);
   printf("Matriz B\n");
   imprimirMatriz(N, mB);
-                                              // printf("Matriz C\n");
-                                              // imprimirMatriz(N, mC);
-  
-  
-    // struct datosMM* valoresMM;
 
-  // /*Creación de tantos hilos de ejecución como se hayan recibido como argumento*/
+ /*Creación de tantos hilos de ejecución como se hayan recibido como argumento*/
   pthread_t hilos[H];
 
   printf("Matriz Producto mA * mB\n");
@@ -99,9 +90,9 @@ int main(int argc, char *argv[]){
       valoresMM->mA = mA;
       valoresMM->mB = mB;
       valoresMM->mC = mC; 
-    /*Asignando como id el valor de h*/
+      /*Asignando como id el valor de h*/
       valoresMM->idHilo = h;
-    /*Funcion par la creacion de hilos de ejecucion.*/
+      /*Funcion par la creacion de hilos de ejecucion.*/
       pthread_create(&hilos[h], NULL, multiplicacionMatriz, valoresMM);
   }
 
