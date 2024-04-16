@@ -81,35 +81,41 @@ int main(int argc, char *argv[]){
   imprimirMatriz(N, mB);
                                               // printf("Matriz C\n");
                                               // imprimirMatriz(N, mC);
-  /*Instancia de un puntero de tipo datosMM.
-  Se asigna su tamano en memoria por medio del metodo malloc*/
-  struct datosMM* valoresMM  = (struct datosMM *) malloc(sizeof(struct datosMM));
+  
+  
     // struct datosMM* valoresMM;
-  valoresMM->N = N;
-  valoresMM->H = H;
-  valoresMM->mA = mA;
-  valoresMM->mB = mB;
-  valoresMM->mC = mC;
+
   // /*Creación de tantos hilos de ejecución como se hayan recibido como argumento*/
   pthread_t hilos[H];
 
   printf("Matriz Producto mA * mB\n");
 
   for(int h=0; h<H; h++){
+      /*Instancia de un puntero de tipo datosMM.
+      Se asigna su tamano en memoria por medio del metodo malloc*/
+      struct datosMM* valoresMM  = (struct datosMM *) malloc(sizeof(struct datosMM));
+      valoresMM->N = N;
+      valoresMM->H = H;
+      valoresMM->mA = mA;
+      valoresMM->mB = mB;
+      valoresMM->mC = mC; 
+    /*Asignando como id el valor de h*/
+      valoresMM->idHilo = h;
     /*Funcion par la creacion de hilos de ejecucion.*/
-    pthread_create(&hilos[h], NULL, multiplicacionMatriz, valoresMM);
+      pthread_create(&hilos[h], NULL, multiplicacionMatriz, valoresMM);
   }
+
   /*Puesta en espera para terminacion de cada  uno de los hilos*/
   for (int h = 0; h < H; h++)
   {
       pthread_join(hilos[h], NULL);
   }
-  
-  
+
+
   printf("\nFin del programa\n");
   // return 0;
   pthread_exit( NULL );
-  free(valoresMM);
+  // free(valoresMM);
 
 }
 

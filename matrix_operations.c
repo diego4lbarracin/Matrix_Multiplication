@@ -35,19 +35,25 @@ void* multiplicacionMatriz(void* arg){
   struct datosMM *valorInterno = arg;
   /*Algoritmo simple de multiplicacion de matrices*/
   double *pA, *pB, sumaTemp;
-  for (int i = 0; i < valorInterno->N; i++)
-  {
-      for (int j = 0; j < valorInterno->N; j++)
-      {
-        pA = valorInterno->mA + (i*valorInterno->N);
-        pB = valorInterno->mB +j;
-        for (int k = 0; k < valorInterno->N; k++, pA++, pB+=valorInterno->N)
-        {
-          sumaTemp += *pA * *pB;
-        }
-        valorInterno->mC[(j+i)*valorInterno->N] = sumaTemp;
-      }
-  }
-  imprimirMatriz(valorInterno->N, valorInterno->mC);
+  /*
+    Si h=2 y n=100 
+    int ini = n/h; (debe ser igual a 0 y a 50)
+    int fin = n/(h+1); (debe ser igual a 50 y a 100)
+  */
+  printf("Hilos: %d, idHilo es: %d\n", valorInterno->H, valorInterno->idHilo);
+  // for (int i = ini; i < fin; i++)
+  // {
+  //     for (int j = 0; j < valorInterno->N; j++)
+  //     {
+  //       pA = valorInterno->mA + (i*valorInterno->N);
+  //       pB = valorInterno->mB +j;
+  //       for (int k = 0; k < valorInterno->N; k++, pA++, pB+=valorInterno->N)
+  //       {
+  //         sumaTemp += *pA * *pB;
+  //       }
+  //       valorInterno->mC[(j+i)*valorInterno->N] = sumaTemp;
+  //     }
+  // }
+  // imprimirMatriz(valorInterno->N, valorInterno->mC);
   return NULL;
 }
