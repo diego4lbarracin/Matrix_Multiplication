@@ -1,7 +1,7 @@
 /*
   Fecha: 04/15/04
   Autor: Diego Albarracin
-  Materia: Sistemas Operativos
+  Materia: Sistemas Operativos y Curso de GitHub
   Tema: Concurrencia, Paralelismo y Programacion de Hilos de Ejecucion.
   Objetivo: Metodologia para la implementacion de la 
   multiplicacion de matrices haciendo uso de paralelismo 
